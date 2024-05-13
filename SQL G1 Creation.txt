@@ -1,0 +1,44 @@
+CREATE TABLE STUDENT (RollNo CHAR(6),StudentName VARCHAR(20),Course VARCHAR(10),DOB DATE,PRIMARY KEY (RollNo));
+
+CREATE TABLE SOCIETY (SocID CHAR(6),SocName VARCHAR(20),MentorName VARCHAR(15),TotalSeats INT UNSIGNED,PRIMARY KEY (SocID));
+
+CREATE TABLE ENROLLMENT (RollNo CHAR(6),SID CHAR(6),Date DATE,FOREIGN KEY (RollNo) REFERENCES STUDENT(RollNo),FOREIGN KEY (SID) REFERENCES SOCIETY(SocID));
+
+STUDENT TABLE:
+
+INSERT INTO STUDENT (RollNo, StudentName, Course, DOB)
+    -> VALUES
+    ->     ('220090', 'Aarav Kumar', 'B.Com (H)', '2000-05-10'),
+    ->     ('220120', 'Aditi Singh', 'B.Sc. (H)', '2001-02-15'),
+    ->     ('230220', 'Ananya Sharma', 'Punjabi', '2000-09-20'),
+    ->     ('230390', 'Arjun Gupta', 'BMS', '2000-11-18'),
+    ->     ('220032', 'Ayesha Patel', 'B.Com', '2000-07-25'),
+    ->     ('230470', 'Dhruv Verma', 'BBE', '2001-04-05'),
+    ->     ('220050', 'Ishaan Kapoor', 'B.A. Eco', '2000-03-12'),
+    ->     ('230420', 'Kavya Shah', 'B.Sc. (H)', '2000-08-30'),
+    ->     ('230392', 'Neha Gupta', 'BMS', '2001-01-08'),
+    ->     ('220030', 'Riya Singh', 'B.Com', '2000-06-14'),
+    ->     ('220052', 'Rohan Sharma', 'B.A. Eco', '2000-10-22'),
+    ->     ('230090', 'Sanya Kapoor', 'B.Com (H)', '2001-07-01'),
+    ->     ('230080', 'Shreya Patel', 'Punjabi', '2001-09-05'),
+    ->     ('230473', 'Vivaan Verma', 'BBE', '2000-12-10'),
+    ->     ('220034', 'Yash Shah', 'B.Com', '2000-04-18');
+
+SOCIETY TABLE:
+
+INSERT INTO SOCIETY (SocID, SocName, MentorName, TotalSeats)
+VALUES 
+    ('S007', 'NSS', 'Samarth Gupta', 50),
+    ('S005', 'Debating', 'Ajay', 40),
+    ('S004', 'Dancing', 'Mukesh Awasthi', 60),
+    ('S008', 'Sashakt', 'Rakesh Jha', 35),
+    ('S009', 'Urja', 'Sushil Gupta', 45),
+    ('S001', 'ACE', 'Sakshi Sehgal', 55),
+    ('S002', 'ASBEMS', 'Indra Sharma', 30);
+
+ENROLLMENT TABLE:
+
+INSERT INTO enrollment (RollNo, SID, Date) SELECT s.RollNo, soc.SocID, CURDATE() FROM student s CROSS JOIN (SELECT SocID FROM society ORDER BY RAND()
+ LIMIT 1) AS soc;
+
+UPDATE enrollment e INNER JOIN (SELECT RollNo, SocID FROM (SELECT RollNo, SocID, ROW_NUMBER() OVER (PARTITION BY RollNo ORDER BY RAND()) as row_num FROM student CROSS JOIN society) AS temp WHERE temp.row_num = 1) AS random_enrollment ON e.RollNo = random_enrollment.RollNo SET e.SID = random_enrollment.SocID, e.Date = CURDATE();

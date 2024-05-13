@@ -1,0 +1,57 @@
+Create Worker table-
+
+CREATE TABLE Worker (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    JoiningDate DATE,
+    DepartmentNo INT
+);
+
+CREATE TABLE Department (
+    DepNo INT PRIMARY KEY,
+    DName VARCHAR(100),
+    Location VARCHAR(100),
+    MgrID INT,
+    FOREIGN KEY (MgrID) REFERENCES Worker(ID)
+);
+
+inserting values
+
+INSERT INTO Worker (ID, Name, Salary, JoiningDate, DepartmentNo)
+VALUES 
+    (1, 'John Smith', 50000.00, '2022-01-15', 1),
+    (2, 'Alice Johnson', 60000.00, '2021-05-20', 2),
+    (3, 'Michael Brown', 55000.00, '2023-03-10', 1),
+    (4, 'Jessica Miller', 52000.00, '2022-11-30', 2),
+    (5, 'Andrew Lee', 58000.00, '2024-02-18', 1);
+
+INSERT INTO Department (DepNo, DName, Location, MgrID)
+VALUES 
+    (1, 'IT', 'New York', 1),
+    (2, 'HR', 'Los Angeles', 2),
+    (3, 'Finance', 'Chicago', 5),
+    (4, 'Marketing', 'Houston', 4),
+    (5, 'Operations', 'Dallas', 3);
+
+Display the name of all the workers along with their department name and manager name of that department:
+
+SELECT w.Name AS WorkerName, d.DName AS DepartmentName, m.Name AS ManagerName
+FROM Worker w
+INNER JOIN Department d ON w.DepartmentNo = d.DepNo
+LEFT JOIN Worker m ON d.MgrID = m.ID;
+
+Count the number of workers working in the "Finance" department:
+
+SELECT COUNT(*) AS WorkersInFinance
+FROM Worker w
+JOIN Department d ON w.DepartmentNo = d.DepNo
+WHERE d.DName = 'Finance';
+
+Update the salary of all employees who work in the location 'Delhi' by giving a 20% raise:
+
+UPDATE Worker
+SET Salary = Salary * 1.20
+WHERE DepartmentNo IN (SELECT DepNo FROM Department WHERE Location = 'Delhi');
+
+

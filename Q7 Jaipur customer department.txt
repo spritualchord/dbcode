@@ -1,0 +1,65 @@
+Create table customer and department:
+
+CREATE TABLE Department (
+    ProductID INT PRIMARY KEY,
+    Prod_Name VARCHAR(100),
+    Prod_details VARCHAR(255),
+    Prod_price DECIMAL(10, 2)
+);
+
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Customer_Name VARCHAR(100),
+    City VARCHAR(100),
+    ProductID INT,
+    FOREIGN KEY (ProductID) REFERENCES Department(ProductID)
+);
+
+Insert values:
+
+INSERT INTO Department (ProductID, Prod_Name, Prod_details, Prod_price)
+VALUES 
+    (1, 'Toothpaste', 'Fluoride toothpaste', 5.99),
+    (2, 'Toothbrush', 'Soft-bristle toothbrush', 3.49),
+    (3, 'Shampoo', 'Anti-dandruff shampoo', 8.99),
+    (4, 'Soap', 'Moisturizing soap', 2.99),
+    (5, 'Body Lotion', 'With shea butter', 7.49);
+
+INSERT INTO Customer (CustomerID, Customer_Name, City, ProductID)
+VALUES 
+    (1, 'John Doe', 'Jaipur', 1),
+    (2, 'Alice Smith', 'Mumbai', 2),
+    (3, 'Michael Brown', 'Jaipur', 3),
+    (4, 'Jessica Miller', 'Jaipur', 4),
+    (5, 'David Wilson', 'Bangalore', 5);
+
+Customers in jaipur-
+
+SELECT Customer_Name
+FROM Customer
+WHERE City = 'Jaipur';
+
+
+Customer purchased soap-
+
+SELECT DISTINCT c.Customer_Name
+FROM Customer c
+JOIN Department d ON c.ProductID = d.ProductID
+WHERE d.Prod_Name = 'Soap';
+
+
+Adding new column:
+
+ALTER TABLE Department
+ADD COLUMN Prod_price DECIMAL(10, 2);
+
+UPDATE Department
+SET Prod_price = CASE 
+                    WHEN Prod_Name = 'Toothpaste' THEN 5.99
+                    WHEN Prod_Name = 'Toothbrush' THEN 3.49
+                    WHEN Prod_Name = 'Shampoo' THEN 8.99
+                    WHEN Prod_Name = 'Soap' THEN 2.99
+                    WHEN Prod_Name = 'Body Lotion' THEN 7.49
+                    ELSE 0.00 -- Default value in case of any new products added
+                END;
+

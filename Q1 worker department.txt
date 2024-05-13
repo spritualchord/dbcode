@@ -1,0 +1,48 @@
+Q1
+Create Table with relevant constraints-
+CREATE TABLE Department (
+    DepNo INT PRIMARY KEY,
+    DName VARCHAR(50) NOT NULL,
+    Location VARCHAR(50) NOT NULL,
+    MgrID INT
+);
+
+CREATE TABLE Worker (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Salary DECIMAL(10, 2) NOT NULL,
+    JoiningDate DATE NOT NULL,
+    DepartmentNo INT,
+    FOREIGN KEY (DepartmentNo) REFERENCES Department(DepNo)
+);
+
+-- Populating Department table
+INSERT INTO Department (DepNo, DName, Location, MgrID) VALUES
+(1, 'IT', 'New York', 101),
+(2, 'Finance', 'London', 102),
+(3, 'HR', 'Paris', 103),
+(4, 'Marketing', 'Tokyo', 104),
+(5, 'Sales', 'Sydney', 105);
+
+-- Populating Worker table
+INSERT INTO Worker (ID, Name, Salary, JoiningDate, DepartmentNo) VALUES
+(1, 'John Doe', 50000, '2022-01-15', 1),
+(2, 'Alice Smith', 60000, '2021-08-20', 2),
+(3, 'Mike Johnson', 55000, '2020-11-10', 1),
+(4, 'Jessica Brown', 62000, '2023-03-25', 4),
+(5, 'Mark Taylor', 58000, '2022-06-30', 3);
+
+Query to select distinct-
+SELECT DISTINCT Location FROM Department;
+
+ Query to display the Department Name, No. of Employees, and the average salary for all employees in that department:
+SELECT d.DName AS Department_Name, COUNT(w.ID) AS No_of_Employees, AVG(w.Salary) AS Average_Salary
+FROM Department d
+LEFT JOIN Worker w ON d.DepNo = w.DepartmentNo
+GROUP BY d.DepNo;
+
+ Query to display Name with the 1st letter capitalized and all other letter lowercase and length of their name of all the workers whose name starts with ‘J’, ’A’ and ‘M’
+SELECT CONCAT(UPPER(SUBSTRING(Name, 1, 1)), LOWER(SUBSTRING(Name, 2))) AS Formatted_Name, LENGTH(Name) AS Name_Length
+FROM Worker
+WHERE Name LIKE 'J%' OR Name LIKE 'A%' OR Name LIKE 'M%';
+

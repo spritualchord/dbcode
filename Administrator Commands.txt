@@ -1,0 +1,14 @@
+-- Create user
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
+
+-- Create role
+CREATE ROLE 'role_name';
+
+-- Grant privileges to a role
+GRANT SELECT, INSERT, UPDATE ON database_name.table_name TO 'role_name';
+
+-- Revoke privileges from a role
+REVOKE SELECT, INSERT, UPDATE ON database_name.table_name FROM 'role_name';
+
+-- Create index
+CREATE INDEX index_name ON table_name (column_name);

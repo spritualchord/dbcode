@@ -1,0 +1,83 @@
+Query 1: Select empno,ename,job,hiredate from emp;
+
+Query 2: Select DISTINCT job from emp;
+
+Query 3: Select CONCAT(ename, ', ', job) AS "Name and Job" from emp;
+
+Query 4: Select * from emp;
+	 Select CONCAT_WS("," ,empno, ename, job, mgr, hiredate, sal, comm, deptno) as "Sentence" from emp;
+
+Query 5: Select ename, sal from emp where sal > 2850;
+
+Query 6: Select ename, deptno from emp where empno = 7900;
+
+Query 7: Select ename, sal from emp where (sal < 1500) OR (sal > 2850); OR
+	 Select ename, sal from emp where sal NOT BETWEEN 1500 AND 2850;
+
+Query 8: Select ename, job, hiredate from emp WHERE hiredate BETWEEN '1981-02-20' AND '1981-05-01';
+
+Query 9: SELECT ename, deptno from emp WHERE deptno in (10, 30) ORDER BY ename;
+
+Query 10: SELECT ename, sal from emp WHERE (deptno in (10, 30)) AND (sal > 1500);
+
+Query 11: SELECT ename, hiredate from emp WHERE hiredate like '%81%';
+
+Query 12: SELECT ename, job FROM emp WHERE mgr IS NULL;
+
+Query 13: SELECT ename, sal, comm FROM emp WHERE comm IS NOT NULL ORDER BY sal DESC
+comm DESC;
+
+Query 14: SELECT ename FROM emp WHERE ename like '__A%';
+
+Query 15: SELECT ename FROM emp WHERE ((ename like '%A%A%') OR (ename like '%R%R%')) AND ((deptno = 30) OR (mgr = 7788));
+
+Query 16: SELECT ename, job, sal FROM emp WHERE ((job = "clerk") OR (job = "analyst")) AND (sal NOT IN (1000,3000,5000));
+
+Query 17: SELECT ename, sal, comm FROM emp WHERE comm > sal * 1.05;
+
+Query 18: SELECT CURRENT_DATE;
+
+Query 19: SELECT empno, ename, sal, ROUND(sal*1.15) AS new_sal FROM emp;
+
+Query 20: SELECT empno, ename, sal, ROUND(sal*1.15) AS new_sal, ROUND(sal*1.15) - sal AS increase_in_sal FROM emp;
+
+Query 23: SELECT ename || ' earns ' || sal || ' monthly but wants ' || (sal * 3) AS "Dream Salary" FROM emp;
+
+Query 24: SELECT ename,LPAD(sal,15,'$') "SALARY" FROM emp;
+	  SELECT UPPER(SUBSTRING(ename,1,1)) FROM emp;
+	  SELECT LOWER(SUBSTRING(ename,3)) FROM emp;
+
+Query 25: SELECT CONCAT(UPPER(SUBSTRING(ename,1,1)),LOWER(SUBSTRING(ename,2))) AS Name FROM emp;
+	  SELECT ename,LENGTH(ename) AS LENGTH FROM emp WHERE (ename LIKE 'J%') OR (ename LIKE 'A%') OR (ename LIKE'M%');
+
+Query 26: SELECT ename,hiredate,dayname(hiredate) AS "DAY" FROM emp;
+
+Query 27: SELECT ename, IFNULL(comm,"No commission") FROM emp UNION SELECT ename,'No Commission' FROM EMP WHERE (comm = 0.0);
+
+Query 28: SELECT ename,dname,E.deptno FROM emp E,dept D WHERE E.deptno=D.deptno;
+
+Query 29: SELECT DISTINCT job FROM emp WHERE deptno = 30;
+
+Query 30: SELECT ename,dname,loc FROM emp E,dept D WHERE ((comm IS NOT NULL) OR NOT(comm=0)) AND (E.deptno=D.deptno);
+
+Query 31: SELECT ename,dname FROM emp E,dept D WHERE (ename LIKE '%A%') AND (E.deptno=D.deptno);
+
+Query 32: SELECT ename,job,E.deptno,dname FROM emp E,dept D WHERE (loc='DALLAS') AND (E.deptno=D.deptno);
+
+Query 33: SELECT E.ename AS employee,E.empno AS emp_num,M.ename AS manager,M.empno AS mgr_num FROM emp E
+,emp M WHERE E.mgr = M.empno;
+
+Query 34: SELECT E.ename AS employee,E.empno AS emp_num,M.ename AS manager,M.empno AS mgr_num FROM emp E
+,emp M WHERE E.mgr=M.empno UNION SELECT E.ename AS employee,E.empno AS emp_num,'no manager ' AS manager,' no manager' AS mgr_num FROM emp E WHERE E.mgr IS NULL;
+
+Query 35: SELECT E.ename AS employee,E.deptno AS DEPARTMENT,C.ename AS Colleague FROM emp E,emp C WHERE E.deptno=C.deptno AND E.empno!=C.empno;
+
+Query 36: SELECT ename,job,dname,sal,grade FROM emp E,dept D,salgrade S WHERE (E.deptno=D.deptno) AND ((sal>=losal) AND (sal<=hisal));
+
+Query 37: SELECT ename,hiredate FROM emp WHERE hiredate > (SELECT hiredate FROM emp WHERE ename='BLAKE');
+
+Query 38: SELECT E.ename AS employee,E.hiredate AS emp_hiredate,M.ename AS manager,M.hiredate AS mgr_hiredate FROM emp E,emp M WHERE (E.mgr=M.empno) AND (E.hiredate<M.hiredate);
+
+Query 40: SELECT MAX(sal) AS MAXIMUM,MIN(sal) AS MINIMUM,SUM(sal) AS SUM,ROUND(AVG(sal)) AS AVERAGE FROM emp;
+
+Query 41: SELECT job,MAX(sal) AS max_sal,MIN(sal) AS min_sal, SUM(sal) AS sum_sal,ROUND(AVG(sal)) AS avg_sal FROM emp GROUP BY job;

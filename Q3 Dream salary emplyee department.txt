@@ -1,0 +1,40 @@
+Question 3:
+
+(A)
+CREATE TABLE DEPARTMENT (Dno INTEGER NOT NULL PRIMARY KEY, Dname VARCHAR(50), Location VARCHAR(50) NOT NULL DEFAULT 'New Delhi');
+
+CREATE TABLE EMPLOYEE (Eno CHAR(3) NOT NULL PRIMARY KEY, Ename VARCHAR(50) NOT NULL, Job_type VARCHAR(50) NOT NULL, Manager CHAR(3), Hire_date DATE NOT NULL, Dno INTEGER, Commission DECIMAL(10, 2), Salary DECIMAL(7, 2) NOT NULL, FOREIGN KEY (Manager) REFERENCES EMPLOYEE(Eno), FOREIGN KEY (Dno) REFERENCES DEPARTMENT(Dno));
+
+
+
+(B)
+
+INSERT INTO DEPARTMENT (Dno, Dname, Location) 
+VALUES 
+    (1, 'Finance', 'Mumbai'),
+    (2, 'HR', 'Bangalore'),
+    (3, 'IT', 'Chennai'),
+    (4, 'Marketing', 'Kolkata'),
+    (5, 'Operations', 'Hyderabad');
+
+
+INSERT INTO EMPLOYEE (Eno, Ename, Job_type, Manager, Hire_date, Dno, Commission, Salary) 
+VALUES 
+    ('001', 'Rahul Sharma', 'Manager', NULL, '2023-01-15', 1, 1000.00, 60000.00),
+    ('002', 'Priya Verma', 'Assistant', '001', '2023-05-20', 2, 500.00, 40000.00),
+    ('003', 'Amit Kumar', 'Clerk', '001', '2024-02-10', 1, NULL, 35000.00),
+    ('004', 'Sneha Singh', 'Manager', NULL, '2022-11-30', 2, 1200.00, 70000.00),
+    ('005', 'Ananya Patel', 'Assistant', '004', '2024-08-18', 2, 600.00, 45000.00);
+
+
+(C)
+
+SELECT Ename, Salary, Salary * 3 AS "Dream Salary" FROM EMPLOYEE;
+
+(D)
+
+SELECT E1.Eno AS "Employee No.", E1.Ename AS "Employee Name", E1.Manager AS "Manager No.", E2.Ename AS "Manager Name" FROM EMPLOYEE E1 LEFT JOIN EMPLOYEE E2 ON E1.Manager = E2.Eno;
+
+(E)
+
+SELECT DISTINCT Job_type FROM EMPLOYEE WHERE Dno = 30;

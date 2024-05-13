@@ -1,0 +1,61 @@
+
+Query 1: SELECT DISTINCT s.StudentName FROM student s INNER JOIN enrollment e ON s.Roll_No = e.Roll_No;
+
+Query 2: SELECT SocName FROM society;
+
+Query 3: SELECT StudentName FROM student WHERE StudentName LIKE 'A%';
+
+Query 4: SELECT * FROM student WHERE Course IN ('B.Sc. (H)', 'Chemistry');
+
+Query 5: SELECT StudentName FROM student WHERE (Roll_No LIKE 'X%' OR Roll_No LIKE 'Z%') AND Roll_No LIKE '%9';
+
+Query 6: SET @N = 40;
+	 SELECT * FROM society WHERE TotalSeats > @N;
+
+Query 7: UPDATE society SET MentorName = 'NewMentor'WHERE SocID = 'S001';
+
+Query 8: SELECT s.StudentName FROM student s INNER JOIN enrollment e ON s.Roll_No = e.Roll_No INNER JOIN society soc ON e.SID = soc.SocID WHERE soc.SocName = 'NSS' ORDER BY s.DOB ASC LIMIT 1;
+
+Query 9: SELECT soc.SocName FROM society soc INNER JOIN enrollment e ON soc.SocID = e.SID GROUP BY soc.SocName ORDER BY COUNT(*) DESC LIMIT 1;
+
+Query 10: SELECT soc.SocName FROM society soc LEFT JOIN enrollment e ON soc.SocID = e.SID GROUP BY soc.SocName ORDER BY COUNT(*) ASC LIMIT 2;
+
+Query 11: SELECT StudentName FROM student WHERE Roll_No NOT IN (SELECT Roll_No FROM enrollment);
+
+Query 12: SELECT s.StudentName FROM student s INNER JOIN enrollment e ON s.Roll_No = e.Roll_No GROUP BY s.StudentName HAVING COUNT(*) >= 2;
+
+Query 13: SELECT soc.SocName FROM society soc INNER JOIN enrollment e ON soc.SocID = e.SID GROUP BY soc.SocName HAVING COUNT(*) = (SELECT MAX(enrollment_count) FROM (SELECT COUNT(*) as enrollment_count FROM enrollment GROUP BY SID) as max_enrollment);
+
+Query 14: SELECT s.StudentName, soc.SocName FROM student s LEFT JOIN enrollment e ON s.Roll_No = e.Roll_No LEFT JOIN society soc ON e.SID = soc.SocID;
+
+Query 15: SELECT s.StudentName FROM student s INNER JOIN enrollment e ON s.Roll_No = e.Roll_No INNER JOIN society soc ON e.SID = soc.SocID WHERE soc.SocName IN ('Debating', 'Dancing', 'Sashakt');
+
+Query 16: SELECT SocName FROM society WHERE MentorName LIKE '%Gupta%';
+
+Query 17: SELECT SocName FROM society soc INNER JOIN (SELECT SID, COUNT(*) as enrollment_count FROM enrollment GROUP BY SID) as enroll_counts ON soc.SocID = enroll_counts.SID WHERE enroll_counts.enrollment_count <= (0.1 * TotalSeats);
+
+Query 18: SELECT s.SocName FROM SOCIETY s LEFT JOIN ENROLLMENT e ON s.SocID = e.SID GROUP BY s.SocID HAVING COUNT(e.SID) <= 0.1 * s.TotalSeats;
+
+Query 19: SELECT SocName, TotalSeats - COUNT(e.SID) AS VacantSeats FROM SOCIETY s LEFT JOIN ENROLLMENT e ON s.SocID = e.SID GROUP BY SocName;
+
+Query 20: UPDATE SOCIETY SET TotalSeats = TotalSeats * 1.1;
+
+Query 21: ALTER TABLE ENROLLMENT ADD COLUMN FeesPaid ENUM('Yes', 'No');
+
+Query 22: UPDATE ENROLLMENT SET Date = CASE WHEN SID = 'SI' THEN '2018-01-15' WHEN SID = 'S2' THEN CURDATE() WHEN SID = 'S3' THEN '2018-01-02' END WHERE SID IN ('SI', 'S2', 'S3');
+
+Query 23: CREATE VIEW Society_Enrollment_Count AS SELECT s.SocID, s.SocName, COUNT(e.RollNo) AS TotalEnrolled FROM SOCIETY s LEFT JOIN ENROLLMENT e ON s.SocID = e.SID GROUP BY s.SocID, s.SocName;
+
+Query 24: SELECT StudentName FROM STUDENT WHERE RollNo IN (SELECT RollNo FROM ENROLLMENT GROUP BY RollNo HAVING COUNT(DISTINCT SID) = (SELECT COUNT(*) FROM SOCIETY));
+
+Query 25: SELECT COUNT(*) FROM (SELECT SID FROM ENROLLMENT GROUP BY SID HAVING COUNT(*) > 5) AS SocietyCount;
+
+Query 26: ALTER TABLE STUDENT ADD COLUMN MobileNumber CHAR(10) DEFAULT '9999999999';
+
+Query 27: SELECT COUNT(*) FROM STUDENT WHERE TIMESTAMPDIFF(YEAR, DOB, CURDATE()) > 20;
+
+Query 28: SELECT DISTINCT s.StudentName FROM STUDENT s INNER JOIN ENROLLMENT e ON s.RollNo = e.RollNo WHERE YEAR(s.DOB) = 2001;
+
+Query 29: SELECT COUNT(*) FROM (SELECT SocID FROM SOCIETY WHERE SocName LIKE 'S%t' AND SocID IN (SELECT SID FROM ENROLLMENT GROUP BY SID HAVING COUNT(*) >= 5)) AS SocietyCount;
+
+Query 30: SELECT s.SocName, s.MentorName, s.TotalSeats AS TotalCapacity, COUNT(e.SID) AS TotalEnrolled, (s.TotalSeats - COUNT(e.SID)) AS UnfilledSeats FROM SOCIETY s LEFT JOIN ENROLLMENT e ON s.SocID = e.SID GROUP BY s.SocID, s.SocName, s.MentorName, s.TotalSeats;
